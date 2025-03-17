@@ -54,7 +54,10 @@ ClusterEntity _$ClusterEntityFromJson(
           : ClusterEntity._emptyStringToListFromJson(json['technical_details']),
   businessAngleText: json['business_angle_text'] as String? ?? "",
   businessAnglePoints:
-      json['business_angle_points'] as List<dynamic>? ?? const [],
+      (json['business_angle_points'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const [],
   userActionItems:
       json['user_action_items'] == null
           ? const []

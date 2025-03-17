@@ -24,7 +24,7 @@ class Cluster {
   final List keyPlayers;
   final List<String> technicalDetails;
   final String businessAngleText;
-  final List businessAnglePoints;
+  final List<String> businessAnglePoints;
   final List<String> userActionItems;
   final List scientificSignificance;
   final List travelAdvisory;
@@ -50,14 +50,6 @@ class Cluster {
       'image': articles[index]["image"],
       'caption': articles[index]["image_caption"],
     };
-  }
-
-  String quoteSource() {
-    if (quoteAuthor.isEmpty) {
-      return "";
-    } else {
-      return "$quoteAuthor (via $quoteSourceDomain)";
-    }
   }
 
   Cluster({

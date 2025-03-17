@@ -77,7 +77,7 @@ class ClusterEntity {
   @JsonKey(fromJson: _emptyStringToListFromJson)
   final List<String> technicalDetails;
   final String businessAngleText;
-  final List businessAnglePoints;
+  final List<String> businessAnglePoints;
   @JsonKey(fromJson: _emptyStringToListFromJson)
   final List<String> userActionItems;
   final List scientificSignificance;
