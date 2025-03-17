@@ -41,7 +41,7 @@ class ClusterEntity {
     this.leagueStandings = "",
     this.diyTips = "",
     this.designPrinciples = "",
-    this.userExperienceImpact = "",
+    this.userExperienceImpact = const [],
     this.gameplayMechanics = const [],
     this.industryImpact = const [],
     this.technicalSpecifications = "",
@@ -88,7 +88,8 @@ class ClusterEntity {
   final String leagueStandings;
   final String diyTips;
   final String designPrinciples;
-  final String userExperienceImpact;
+  @JsonKey(fromJson: _emptyStringToListFromJson)
+  final List<String> userExperienceImpact;
   final List gameplayMechanics;
   final List<String> industryImpact;
   final String technicalSpecifications;

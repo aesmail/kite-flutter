@@ -34,12 +34,31 @@ class Cluster {
   final String leagueStandings;
   final String diyTips;
   final String designPrinciples;
-  final String userExperienceImpact;
+  final List<String> userExperienceImpact;
   final List gameplayMechanics;
   final List<String> industryImpact;
   final String technicalSpecifications;
   final List<Map> articles;
   final List<Map> domains;
+
+  bool imageAvailable(int index) {
+    return articles[index]["image"] != "";
+  }
+
+  Map<String, String> getImage(int index) {
+    return {
+      'image': articles[index]["image"],
+      'caption': articles[index]["image_caption"],
+    };
+  }
+
+  String quoteSource() {
+    if (quoteAuthor.isEmpty) {
+      return "";
+    } else {
+      return "$quoteAuthor (via $quoteSourceDomain)";
+    }
+  }
 
   Cluster({
     required this.clusterNumber,

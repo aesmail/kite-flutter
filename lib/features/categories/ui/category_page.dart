@@ -128,9 +128,10 @@ class _CategoryPageState extends State<CategoryPage> {
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 onTap: () {
-                  categoryViewModel.selectCategory(category);
-                  sleep(Duration(seconds: 3));
-                  setState(() {});
+                  // sleep(Duration(seconds: 3));
+                  setState(() {
+                    categoryViewModel.selectCategory(category);
+                  });
                 },
                 child: Center(
                   child: Container(
