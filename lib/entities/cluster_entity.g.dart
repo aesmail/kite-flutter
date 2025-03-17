@@ -69,7 +69,12 @@ ClusterEntity _$ClusterEntityFromJson(
   leagueStandings: json['league_standings'] as String? ?? "",
   diyTips: json['diy_tips'] as String? ?? "",
   designPrinciples: json['design_principles'] as String? ?? "",
-  userExperienceImpact: json['user_experience_impact'] as String? ?? "",
+  userExperienceImpact:
+      json['user_experience_impact'] == null
+          ? const []
+          : ClusterEntity._emptyStringToListFromJson(
+            json['user_experience_impact'],
+          ),
   gameplayMechanics: json['gameplay_mechanics'] as List<dynamic>? ?? const [],
   industryImpact:
       (json['industry_impact'] as List<dynamic>?)

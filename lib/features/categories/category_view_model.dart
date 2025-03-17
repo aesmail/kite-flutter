@@ -17,7 +17,7 @@ class CategoryViewModel {
     clusters = await KiteRepository().getClusters(selectedCategory);
   }
 
-  void selectCategory(Category category) {
+  selectCategory(Category category) {
     selectedCategory = category;
     getClusters();
   }

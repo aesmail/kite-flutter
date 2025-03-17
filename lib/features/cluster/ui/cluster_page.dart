@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:kite/models/cluster.dart';
@@ -38,23 +39,23 @@ class ClusterPage extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
               SizedBox(height: 30),
-              Row(
-                spacing: 10,
-                children: [
-                  Icon(Icons.pin_drop_outlined, color: Colors.white),
-                  Text(
-                    cluster.location,
-                    style: TextStyle(color: Colors.white, fontSize: 16),
-                  ),
-                ],
-              ),
-              SizedBox(height: 30),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  "https://kagiproxy.com/img/qghCqF2E_pady28w03Y1H6ykoJqpfDIHmfSntvKpkZ3fIfW2uZs5gTVz5xQIJpQXUHHsXgzNLCNbLSPYxR7ST3OlPh2rwLXktw2kGHzsQsWIpyvOqEZ8nxlKCb7Njv7t08xzib-cd-8",
+              if (cluster.location.isNotEmpty)
+                Row(
+                  spacing: 10,
+                  children: [
+                    Icon(Icons.pin_drop_outlined, color: Colors.white),
+                    Text(
+                      cluster.location,
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ],
                 ),
-              ),
+              SizedBox(height: 30),
+              if (cluster.imageAvailable(0))
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(cluster.getImage(0)['image']!),
+                ),
               SizedBox(height: 40),
               Text(
                 "Highlights",
@@ -79,8 +80,12 @@ class ClusterPage extends StatelessWidget {
                       dashLength: 4,
                       dashColor: Colors.white24,
                     ),
-                itemCount: 4,
+                itemCount: cluster.talkingPoints.length,
                 itemBuilder: (context, index) {
+                  final highlightHeader =
+                      cluster.talkingPoints[index].split(":")[0];
+                  final highlightText =
+                      cluster.talkingPoints[index].split(":")[1];
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 20.0, top: 20.0),
                     child: Column(
@@ -106,7 +111,7 @@ class ClusterPage extends StatelessWidget {
                             ),
                             SizedBox(width: 20),
                             Text(
-                              "Drug war controversy",
+                              highlightHeader,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -117,7 +122,7 @@ class ClusterPage extends StatelessWidget {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          "The arrest relates to killings during his administration's controversial drug war and occurred as Duterte returned from Hong Kong where he had attended a gathering with local Filipinos.",
+                          highlightText,
                           style: TextStyle(color: Colors.white, fontSize: 16),
                         ),
                       ],
@@ -131,37 +136,41 @@ class ClusterPage extends StatelessWidget {
                 dashColor: Colors.white24,
               ),
               SizedBox(height: 40),
-              Container(
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Color(0xFF374151),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      "Prices will go up, in Europe and the United States, and jobs are at stake",
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                    SizedBox(height: 10),
-                    TextButton(
-                      style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                      onPressed: () {},
-                      child: Text(
-                        "European Commission President Ursula von der Leyen (via boston.com)",
-                        style: TextStyle(fontSize: 15),
+              if (cluster.quote.isNotEmpty)
+                Container(
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF374151),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        cluster.quote,
+                        style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 10),
+                      if (cluster.quoteAuthor.isNotEmpty)
+                        TextButton(
+                          style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                          onPressed: () {},
+                          child: Text(
+                            cluster.quoteSource(),
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-              ),
               SizedBox(height: 40),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  "https://kagiproxy.com/img/5kHFWhnSI22KFR9fTw44mPNuL_E5jc9QR-DzMK7tv9LmnuImYDT5BxrkFYfa1-u3TKhaN9azVq0Qp9NgHzLcopNGU-69qfW_G-xxEC10ZGK1Wt95Ojtl0uWQ40FKTUOcV73Amjz9sYN7A7phtfE5cRHDmrkYCccNjkuv",
+              if (cluster.imageAvailable(1))
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    cluster.getImage(1)['image']!,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
               SizedBox(height: 40),
               Text(
                 "Perspectives",
@@ -171,223 +180,177 @@ class ClusterPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 20),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: IntrinsicHeight(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10.0),
-                        child: Container(
-                          // height: 120,
-                          width: 250,
+                    children:
+                        cluster.perspectives.map((perspective) {
+                          final title = perspective['text'].split(":")[0];
+                          final text = perspective['text'].split(":")[1];
+                          final source = perspective['sources'][0];
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: Container(
+                              // height: 120,
+                              width: 250,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF374151),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: EdgeInsets.all(20),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    title,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    text,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  TextButton(
+                                    onPressed: () {
+                                      debugPrint("Go to: ${source['url']}");
+                                    },
+                                    child: Text(source['name']),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                  ),
+                ),
+              ),
+              if (cluster.historicalBackground.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 40),
+                    Text(
+                      "Historical background",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      cluster.historicalBackground,
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ],
+                ),
+              if (cluster.humanitarianImpact.isNotEmpty)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 40),
+                    Text(
+                      "Humanitarian impact",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      cluster.humanitarianImpact,
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ],
+                ),
+              // SizedBox(height: 40),
+              // Text(
+              //   "Business angle",
+              //   style: TextStyle(
+              //     color: Colors.white,
+              //     fontSize: 22,
+              //     fontWeight: FontWeight.bold,
+              //   ),
+              // ),
+              // SizedBox(height: 20),
+              // Text(
+              //   "\u2022 Short-term disruption: The immediate impact will be cost increases across supply chains dependent on imported metals, likely being passed to consumers",
+              //   style: TextStyle(color: Colors.white, fontSize: 16),
+              // ),
+              // SizedBox(height: 20),
+              // Text(
+              //   "\u2022 Short-term disruption: The immediate impact will be cost increases across supply chains dependent on imported metals, likely being passed to consumers",
+              //   style: TextStyle(color: Colors.white, fontSize: 16),
+              // ),
+              // SizedBox(height: 20),
+              // Text(
+              //   "\u2022 Short-term disruption: The immediate impact will be cost increases across supply chains dependent on imported metals, likely being passed to consumers",
+              //   style: TextStyle(color: Colors.white, fontSize: 16),
+              // ),
+              if (cluster.internationalReactions.isNotEmpty)
+                Column(
+                  spacing: 10,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 30),
+                    Text(
+                      "International reactions",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    if (cluster.internationalReactions.isNotEmpty)
+                      ...cluster.internationalReactions.map((reaction) {
+                        final List<int> rawCountry =
+                            reaction.split(":")[0].runes.toList();
+                        final country = utf8.decode(rawCountry);
+                        final text = reaction.split(":")[1];
+                        return Container(
                           decoration: BoxDecoration(
                             color: Color(0xFF374151),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           padding: EdgeInsets.all(20),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            spacing: 10,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "US administration",
+                                country,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(height: 10),
                               Text(
-                                "The Arsenal legend suggests his former club can only beat Real Madrid if they approach the tie with the same mentality Leicester City used to win their Premier League title, emphasizing they need tactical discipline despite having more talent.",
+                                text,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
                                 ),
-                              ),
-                              SizedBox(height: 10),
-                              TextButton(
-                                onPressed: () {},
-                                child: Text("Reddit"),
                               ),
                             ],
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10.0),
-                        child: Container(
-                          // height: 120,
-                          width: 250,
-                          decoration: BoxDecoration(
-                            color: Color(0xFF374151),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: EdgeInsets.all(20),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "US administration",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                "The Arsenal legend suggests his former club can only beat Real Madrid.",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              TextButton(
-                                onPressed: () {},
-                                child: Text("Reddit"),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                        );
+                      }),
+                  ],
                 ),
-              ),
-              SizedBox(height: 40),
-              Text(
-                "Historical background",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                "This marks the second time Trump has imposed sweeping tariffs on steel and aluminum, following similar measures during his first term as president. The previous round of tariffs in 2018 sparked retaliatory measures from trading partners and raised concerns about global trade tensions.",
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-              SizedBox(height: 40),
-              Text(
-                "Business angle",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                "\u2022 Short-term disruption: The immediate impact will be cost increases across supply chains dependent on imported metals, likely being passed to consumers",
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-              SizedBox(height: 20),
-              Text(
-                "\u2022 Short-term disruption: The immediate impact will be cost increases across supply chains dependent on imported metals, likely being passed to consumers",
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-              SizedBox(height: 20),
-              Text(
-                "\u2022 Short-term disruption: The immediate impact will be cost increases across supply chains dependent on imported metals, likely being passed to consumers",
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-              SizedBox(height: 40),
-              Text(
-                "International reactions",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 20),
-              Column(
-                spacing: 10,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xFF374151),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      spacing: 10,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "🇪🇺 European Union",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          "Announced retaliatory duties on US industrial and agricultural products effective April 1.",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xFF374151),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      spacing: 10,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "🇪🇺 European Union",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          "Announced retaliatory duties on US industrial and agricultural products effective April 1.",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xFF374151),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: EdgeInsets.all(20),
-                    child: Column(
-                      spacing: 10,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "🇪🇺 European Union",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          "Announced retaliatory duties on US industrial and agricultural products effective April 1.",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
               SizedBox(height: 40),
               Text(
                 "Timeline of events",
@@ -399,190 +362,102 @@ class ClusterPage extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF6285F1),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "1",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                spacing: 20,
+                children:
+                    cluster.timeline.asMap().entries.map((event) {
+                      final date = event.value.split("::")[0];
+                      final text = event.value.split("::")[1];
+                      return Column(
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: 30,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  color: Color(0xFF6285F1),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    (event.key + 1).toString(),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                date,
+                                style: TextStyle(
+                                  color: Color(0xFF6285F1),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16),
+                            child: Container(
+                              padding: EdgeInsets.only(left: 20),
+                              decoration: BoxDecoration(
+                                color: Color(0xFF1A202C),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color(0xFF6285F1),
+                                    blurRadius: 0,
+                                    offset: Offset(-2, 0),
+                                  ),
+                                ],
+                              ),
+                              child: Text(
+                                text,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        "March 12, 2025",
-                        style: TextStyle(
-                          color: Color(0xFF6285F1),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: Container(
-                      padding: EdgeInsets.only(left: 20),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF1A202C),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xFF6285F1),
-                            blurRadius: 0,
-                            offset: Offset(-2, 0),
-                          ),
                         ],
-                      ),
-                      child: Text(
-                        "Trump administration imposes 25% tariffs on all steel and aluminum imports",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF6285F1),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "2",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        "March 12, 2025",
-                        style: TextStyle(
-                          color: Color(0xFF6285F1),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: Container(
-                      padding: EdgeInsets.only(left: 20),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF1A202C),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xFF6285F1),
-                            blurRadius: 0,
-                            offset: Offset(-2, 0),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        "Trump administration imposes 25% tariffs on all steel and aluminum imports",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF6285F1),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "3",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        "March 12, 2025",
-                        style: TextStyle(
-                          color: Color(0xFF6285F1),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16),
-                    child: Container(
-                      padding: EdgeInsets.only(left: 20),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF1A202C),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xFF6285F1),
-                            blurRadius: 0,
-                            offset: Offset(-2, 0),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        "Trump administration imposes 25% tariffs on all steel and aluminum imports",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 40),
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Color(0xAA293A5E),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Did you know?",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "The previous steel and aluminum tariffs imposed during Trump's first term had some positive effects on US meta industries but negatively impacted downstream sections.",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                      );
+                    }).toList(),
               ),
+              if (cluster.didYouKnow.isNotEmpty)
+                Column(
+                  children: [
+                    SizedBox(height: 40),
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Color(0xAA293A5E),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Did you know?",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            cluster.didYouKnow,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
