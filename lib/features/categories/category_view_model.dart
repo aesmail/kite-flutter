@@ -13,12 +13,12 @@ class CategoryViewModel {
     getClusters();
   }
 
-  void getClusters() async {
+  Future<void> getClusters() async {
     clusters = await KiteRepository().getClusters(selectedCategory);
   }
 
-  selectCategory(Category category) {
+  Future<void> selectCategory(Category category) async {
     selectedCategory = category;
-    getClusters();
+    await getClusters();
   }
 }

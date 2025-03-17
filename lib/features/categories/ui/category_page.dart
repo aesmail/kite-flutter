@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kite/design/kite_color.dart';
@@ -127,11 +125,9 @@ class _CategoryPageState extends State<CategoryPage> {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
-                onTap: () {
-                  // sleep(Duration(seconds: 3));
-                  setState(() {
-                    categoryViewModel.selectCategory(category);
-                  });
+                onTap: () async {
+                  await categoryViewModel.selectCategory(category);
+                  setState(() {});
                 },
                 child: Center(
                   child: Container(
