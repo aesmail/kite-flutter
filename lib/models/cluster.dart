@@ -1,4 +1,5 @@
 class Cluster {
+  bool didRead = false;
   final int clusterNumber;
   final int uniqueDomains;
   final int numberOfTitles;
@@ -51,6 +52,8 @@ class Cluster {
       'caption': articles[index]["image_caption"],
     };
   }
+
+  void markAsRead() => didRead = true;
 
   Cluster({
     required this.clusterNumber,
