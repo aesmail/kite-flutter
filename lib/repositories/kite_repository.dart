@@ -18,12 +18,12 @@ class KiteRepository {
     ];
   }
 
-  Future<List> getCategories() async {
+  Future<List<Category>> getCategories() async {
     final response = await http.get(Uri.parse("$baseURL/kite.json"));
     if (response.statusCode == 200) {
       final decoder = JsonDecoder();
       final Map json = decoder.convert(response.body);
-      return json['categories']
+      return (json['categories'] as List)
           .map((category) => CategoryEntity.fromJson(category).toCategory())
           .toList();
     } else {

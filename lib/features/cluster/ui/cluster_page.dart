@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kite/features/cluster/ui/business_angle.dart';
 import 'package:kite/features/cluster/ui/did_you_know.dart';
 import 'package:kite/features/cluster/ui/highlights.dart';
-import 'package:kite/features/cluster/ui/historical_background.dart';
+import 'package:kite/features/cluster/ui/news_paragraph.dart';
 import 'package:kite/features/cluster/ui/international_reactions.dart';
 import 'package:kite/features/cluster/ui/location.dart';
 import 'package:kite/features/cluster/ui/news_image.dart';
@@ -71,6 +71,22 @@ class ClusterPage extends StatelessWidget {
               NewsParagraph(
                 title: "Humanitarian Impact",
                 content: cluster.humanitarianImpact,
+              ),
+              NewsParagraph(
+                title: "Technical details",
+                items: cluster.technicalDetails,
+              ),
+              NewsParagraph(
+                title: "Scientific signifinance",
+                items: cluster.scientificSignificance,
+              ),
+              NewsParagraph(
+                title: "Performance statistics",
+                items: cluster.performanceStatistics,
+              ),
+              NewsParagraph(
+                title: "League standings",
+                content: cluster.leagueStandings,
               ),
               // SizedBox(height: 40),
               BusinessAngle(

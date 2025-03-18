@@ -80,11 +80,11 @@ class ClusterEntity {
   final List<String> businessAnglePoints;
   @JsonKey(fromJson: _emptyStringToListFromJson)
   final List<String> userActionItems;
-  final List scientificSignificance;
+  final List<String> scientificSignificance;
   final List travelAdvisory;
   final String destinationHighlights;
   final String culinarySignificance;
-  final List performanceStatistics;
+  final List<String> performanceStatistics;
   final String leagueStandings;
   final String diyTips;
   final String designPrinciples;

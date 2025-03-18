@@ -63,12 +63,18 @@ ClusterEntity _$ClusterEntityFromJson(
           ? const []
           : ClusterEntity._emptyStringToListFromJson(json['user_action_items']),
   scientificSignificance:
-      json['scientific_significance'] as List<dynamic>? ?? const [],
+      (json['scientific_significance'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const [],
   travelAdvisory: json['travel_advisory'] as List<dynamic>? ?? const [],
   destinationHighlights: json['destination_highlights'] as String? ?? "",
   culinarySignificance: json['culinary_significance'] as String? ?? "",
   performanceStatistics:
-      json['performance_statistics'] as List<dynamic>? ?? const [],
+      (json['performance_statistics'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const [],
   leagueStandings: json['league_standings'] as String? ?? "",
   diyTips: json['diy_tips'] as String? ?? "",
   designPrinciples: json['design_principles'] as String? ?? "",

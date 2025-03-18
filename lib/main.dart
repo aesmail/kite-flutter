@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:kite/features/categories/ui/category_page.dart';
-import 'package:kite/repositories/kite_repository.dart';
+// import 'package:kite/repositories/kite_repository.dart';
+import 'package:kite/services/service_locator.dart';
 
 void main() {
-  final kiteRepo = KiteRepository();
-  kiteRepo.getCategories();
-  runApp(const MyApp());
+  setupLocator();
+  // final kiteRepo = KiteRepository();
+  // kiteRepo.getCategories();
+  runApp(const KiteApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class KiteApp extends StatelessWidget {
+  const KiteApp({super.key});
 
   // This widget is the root of your application.
   @override

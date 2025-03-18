@@ -7,7 +7,7 @@ class NewsImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (image.isEmpty) {
+    if (image['image']!.isEmpty) {
       return SizedBox.shrink();
     }
     return Column(
