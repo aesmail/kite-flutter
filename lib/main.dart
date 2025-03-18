@@ -25,6 +25,7 @@ class KiteApp extends StatelessWidget {
           seedColor: Color(0xFF1A202C),
           onPrimary: Colors.white,
         ),
+        scaffoldBackgroundColor: Color(0xFF1A202C),
       ),
       home: const CategoryPage(),
     );

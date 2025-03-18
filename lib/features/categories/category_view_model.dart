@@ -16,10 +16,17 @@ class CategoryViewModel {
       _categoryService.categories;
   ValueNotifier<Category?> get selectedCategoryNotifier =>
       _categoryService.selectedCategory;
+  ValueNotifier<bool> get isNetworkError => _categoryService.isNetworkError;
+  ValueNotifier<bool> get isLoading => _categoryService.isLoading;
 
   CategoryViewModel({required CategoryService categoryService})
     : _categoryService = categoryService {
-    _categoryService.categories.value = KiteRepository().standardCategories();
+    setupViewModel();
+  }
+
+  void setupViewModel() async {
+    _categoryService.isNetworkError.value = false;
+    _categoryService.categories.value = await KiteRepository().getCategories();
     selectCategory(_categoryService.categories.value.first);
     getClusters();
   }
@@ -28,9 +35,16 @@ class CategoryViewModel {
     if (clusters.containsKey(selectedCategory!.name)) {
       _categoryService.currentCluster.value = clusters[selectedCategory!.name]!;
     } else {
+      _categoryService.isLoading.value = true;
       final newClusters = await KiteRepository().getClusters(selectedCategory!);
-      setCategoryClusters(selectedCategory!, newClusters);
-      _categoryService.currentCluster.value = clusters[selectedCategory!.name]!;
+      if (newClusters.isNotEmpty) {
+        setCategoryClusters(selectedCategory!, newClusters);
+      }
+      _categoryService.isLoading.value = false;
+      final cluster = clusters[selectedCategory!.name];
+      if (cluster != null && cluster.isNotEmpty) {
+        _categoryService.currentCluster.value = cluster;
+      }
     }
   }
 

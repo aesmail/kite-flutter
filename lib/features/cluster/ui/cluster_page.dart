@@ -32,72 +32,76 @@ class ClusterPage extends StatelessWidget {
         ),
         title: Text(cluster.category, style: TextStyle(color: Colors.white)),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(20),
-          color: Color(0xFF1A202C),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              NewsTitle(title: cluster.title),
-              SizedBox(height: 50),
-              ShortSummary(shortSummary: cluster.shortSummary),
-              SizedBox(height: 30),
-              Location(location: cluster.location),
-              SizedBox(height: 30),
-              NewsImage(image: cluster.getImage(0)),
-              SizedBox(height: 40),
-              Highlights(highlights: cluster.talkingPoints),
-              DottedLine(
-                direction: Axis.horizontal,
-                dashLength: 4,
-                dashColor: Colors.white24,
-              ),
-              SizedBox(height: 40),
-              Quote(
-                quote: cluster.quote,
-                author: cluster.quoteAuthor,
-                sourceDomain: cluster.quoteSourceDomain,
-                sourceUrl: cluster.quoteSourceUrl,
-              ),
-              SizedBox(height: 40),
-              NewsImage(image: cluster.getImage(1)),
-              SizedBox(height: 40),
-              Perspectives(perspectives: cluster.perspectives),
-              NewsParagraph(
-                title: "Historical Background",
-                content: cluster.historicalBackground,
-              ),
-              NewsParagraph(
-                title: "Humanitarian Impact",
-                content: cluster.humanitarianImpact,
-              ),
-              NewsParagraph(
-                title: "Technical details",
-                items: cluster.technicalDetails,
-              ),
-              NewsParagraph(
-                title: "Scientific signifinance",
-                items: cluster.scientificSignificance,
-              ),
-              NewsParagraph(
-                title: "Performance statistics",
-                items: cluster.performanceStatistics,
-              ),
-              NewsParagraph(
-                title: "League standings",
-                content: cluster.leagueStandings,
-              ),
-              // SizedBox(height: 40),
-              BusinessAngle(
-                text: cluster.businessAngleText,
-                angles: cluster.businessAnglePoints,
-              ),
-              InternationalReactions(reactions: cluster.internationalReactions),
-              SizedBox(height: 40),
-              Timeline(items: cluster.timeline),
-              DidYouKnow(text: cluster.didYouKnow),
-            ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(20),
+            color: Color(0xFF1A202C),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                NewsTitle(title: cluster.title),
+                SizedBox(height: 50),
+                ShortSummary(shortSummary: cluster.shortSummary),
+                SizedBox(height: 30),
+                Location(location: cluster.location),
+                SizedBox(height: 30),
+                NewsImage(image: cluster.getImage(0)),
+                SizedBox(height: 40),
+                Highlights(highlights: cluster.talkingPoints),
+                DottedLine(
+                  direction: Axis.horizontal,
+                  dashLength: 4,
+                  dashColor: Colors.white24,
+                ),
+                SizedBox(height: 40),
+                Quote(
+                  quote: cluster.quote,
+                  author: cluster.quoteAuthor,
+                  sourceDomain: cluster.quoteSourceDomain,
+                  sourceUrl: cluster.quoteSourceUrl,
+                ),
+                SizedBox(height: 40),
+                NewsImage(image: cluster.getImage(1)),
+                SizedBox(height: 40),
+                Perspectives(perspectives: cluster.perspectives),
+                NewsParagraph(
+                  title: "Historical Background",
+                  content: cluster.historicalBackground,
+                ),
+                NewsParagraph(
+                  title: "Humanitarian Impact",
+                  content: cluster.humanitarianImpact,
+                ),
+                NewsParagraph(
+                  title: "Technical details",
+                  items: cluster.technicalDetails,
+                ),
+                NewsParagraph(
+                  title: "Scientific signifinance",
+                  items: cluster.scientificSignificance,
+                ),
+                NewsParagraph(
+                  title: "Performance statistics",
+                  items: cluster.performanceStatistics,
+                ),
+                NewsParagraph(
+                  title: "League standings",
+                  content: cluster.leagueStandings,
+                ),
+                // SizedBox(height: 40),
+                BusinessAngle(
+                  text: cluster.businessAngleText,
+                  angles: cluster.businessAnglePoints,
+                ),
+                InternationalReactions(
+                  reactions: cluster.internationalReactions,
+                ),
+                SizedBox(height: 40),
+                Timeline(items: cluster.timeline),
+                DidYouKnow(text: cluster.didYouKnow),
+              ],
+            ),
           ),
         ),
       ),

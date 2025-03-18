@@ -51,12 +51,17 @@ class Timeline extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: 10),
-                        Text(
-                          date,
-                          style: TextStyle(
-                            color: Color(0xFF6285F1),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                        Flexible(
+                          child: Text(
+                            date,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: true,
+                            style: TextStyle(
+                              color: Color(0xFF6285F1),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ],

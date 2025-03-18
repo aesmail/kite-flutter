@@ -10,4 +10,7 @@ class CategoryService {
   ValueNotifier<List<Cluster>> currentCluster = ValueNotifier<List<Cluster>>(
     [],
   );
+  ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
+  ValueNotifier<bool> isNetworkError = ValueNotifier<bool>(false);
+  ValueNotifier<DateTime?> currentDate = ValueNotifier<DateTime?>(null);
 }
