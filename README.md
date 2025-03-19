@@ -25,14 +25,18 @@ Open the project in vscode. Open the `main.dart` file and press `F5` to run the 
 
 Include screenshots of the app in action.
 
-Business Category
+### Business Category
+
 <img src="/screenshots/business.png" alt="Business category" width="400">
 
-Highlights Section
+### Highlights Section
+
 <img src="/screenshots/highlights.png" alt="Highlights section" width="400">
 
-News Page
+### News Page
+
 <img src="/screenshots/news.png" alt="News page" width="400">
 
-Timeline Section
+### Timeline Section
+
 <img src="/screenshots/timeline.png" alt="Timeline section" width="400">
