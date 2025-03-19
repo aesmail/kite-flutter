@@ -26,8 +26,8 @@ class Timeline extends StatelessWidget {
           spacing: 20,
           children:
               items.asMap().entries.map((event) {
-                final date = event.value.split("::")[0];
-                final text = event.value.split("::")[1];
+                final date = event.value.split("::")[0].trim();
+                final text = event.value.split("::")[1].trim();
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

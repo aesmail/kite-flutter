@@ -1,27 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kite/features/cluster/ui/did_you_know.dart';
+import 'package:kite/features/cluster/ui/news_paragraph.dart';
+import 'package:kite/features/cluster/ui/timeline.dart';
 
 void main() {
-  testWidgets('Test CategoriesBar existence', (WidgetTester tester) async {
+  testWidgets('test the DidYouKnow widget displaying the given text', (
+    WidgetTester tester,
+  ) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(
-      MaterialApp(home: DidYouKnow(text: "Testing is cool")),
+      MaterialApp(home: DidYouKnow(text: "Testing is cool.")),
     );
 
     expect(find.text("Did you know?"), findsOneWidget);
-    expect(find.text("Testing is cool"), findsOneWidget);
+    expect(find.text("Testing is cool."), findsOneWidget);
+  });
 
-    // Verify that our counter starts at 0.
-    // expect(find.text('0'), findsOneWidget);
-    // expect(find.text('1'), findsNothing);
+  testWidgets('test the NewsParagraph widget displaying the given content', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: NewsParagraph(
+          title: "Business analysis",
+          content: "The current market is booming.",
+        ),
+      ),
+    );
 
-    // Tap the '+' icon and trigger a frame.
-    // await tester.tap(find.byIcon(Icons.add));
-    // await tester.pump();
+    expect(find.text("Business analysis"), findsOneWidget);
+    expect(find.text("The current market is booming."), findsOneWidget);
+  });
 
-    // Verify that our counter has incremented.
-    // expect(find.text('0'), findsNothing);
-    // expect(find.text('1'), findsOneWidget);
+  testWidgets(
+    'test the NewsParagraph widget displaying the given items with a leading bullet point',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: NewsParagraph(
+            title: "Financial Analysis",
+            items: [
+              "The current market is booming.",
+              "Business is good world-wide.",
+            ],
+          ),
+        ),
+      );
+
+      expect(find.text("Financial Analysis"), findsOneWidget);
+      expect(find.text("• The current market is booming."), findsOneWidget);
+      expect(find.text("• Business is good world-wide."), findsOneWidget);
+    },
+  );
+
+  testWidgets('test the Timeline widget displaying a few timeline items', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Timeline(
+          items: [
+            "March 2025:: This is what happened in March.",
+            "April 2025:: April came exactly as expected.",
+          ],
+        ),
+      ),
+    );
+
+    expect(find.text("1"), findsOneWidget);
+    expect(find.text("2"), findsOneWidget);
+    expect(find.text("March 2025"), findsOneWidget);
+    expect(find.text("April 2025"), findsOneWidget);
+    expect(find.text("This is what happened in March."), findsOneWidget);
+    expect(find.text("April came exactly as expected."), findsOneWidget);
   });
 }

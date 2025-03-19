@@ -40,7 +40,7 @@ class NewsParagraph extends StatelessWidget {
                 items
                     .map(
                       (item) => Text(
-                        "\u2022 $item",
+                        "• $item",
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     )
