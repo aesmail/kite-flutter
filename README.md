@@ -1,16 +1,31 @@
-# kite
+# Kite News
 
-A new Flutter project.
+The Kite News app is a Flutter application that provides users with the latest news and updates from around the world. The app features a clean and intuitive user interface, with easy navigation and access to a wide range of news sources.
 
-## Getting Started
+## Requirements
 
-This project is a starting point for a Flutter application.
+To run the project, you need to [install flutter](https://docs.flutter.dev/get-started/install) first. The project was developed with Flutter v3.29.2 and Dart v3.7.2.
 
-A few resources to get you started if this is your first Flutter project:
+## Running the Project
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### From the command line
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Open the project directory in your terminal and run the following command:
+
+```
+flutter run
+```
+
+### From VSCode
+
+Open the project in vscode. Open the `main.dart` file and press `F5` to run the app using the built-in debugger.
+
+
+## Screenshots
+
+Include screenshots of the app in action.
+
+![Business category](/screenshots/business.png)
+![Highlights section](/screenshots/highlights.png)
+![News page](/screenshots/news.png)
+![Timeline section](/screenshots/timeline.png)
